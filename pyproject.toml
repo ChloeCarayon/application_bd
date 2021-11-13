@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "applications_bd"
+version = "0.1.0"
+description = "This project aims to apply some concepts and tools seen in the course Applications of Big Data at EFREI."
+authors = ["Chloe CARAYON <chloe.carayon@efrei.net> - Cecile SPATZ <cecile.spatz@efrei.net>"]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pandas = "^1.0.1"
+scikit-learn = "^1.0.1"
+pylint = "^2.11.1"
+click = "^8.0.3"
+
+
+[tool.poetry.dev-dependencies]
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+black = "^21.10b0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
