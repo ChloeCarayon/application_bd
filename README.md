@@ -1,9 +1,9 @@
-Applications of Big Data
+# Applications of Big Data
 ==============================
 
 This project aims to apply some concepts and tools seen in the course Applications of Big Data at EFREI.
 
-Project Organization
+## Project Organization
 ------------
 
     ├── LICENSE
@@ -28,12 +28,11 @@ Project Organization
     ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
     │   └── figures        <- Generated graphics and figures to be used in reporting
     │
-    ├── requirements.txt   <- The requirements file for reproducing the analysis environment, e.g.
-    │                         generated with `pip freeze > requirements.txt`
-    │
-    ├── setup.py           <- makes project pip installable (pip install -e .) so src can be imported
+    ├── pyproject.toml     <- defines the build system as a dependency.
+    ├── poetry.lock        <- prevents you from automatically getting the latest versions of your dependencies.
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
+    │   ├── main.py        <- command line interfaces to choose action to perform
     │   │
     │   ├── data           <- Scripts to download or generate data
     │   │   └── make_dataset.py
@@ -55,3 +54,18 @@ Project Organization
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+
+
+
+## Getting Start
+
+- Install dependencies
+``` 
+make install
+```
+if issues, delete poetry.lock
+
+- Run the project 
+``` 
+make run
+```
