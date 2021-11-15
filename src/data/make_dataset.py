@@ -1,31 +1,43 @@
 # -*- coding: utf-8 -*-
-import logging
-from pathlib import Path
 
-import click
-from dotenv import find_dotenv, load_dotenv
+from kaggle.api.kaggle_api_extended import KaggleApi
+
+from var_env import directory_path
+
+from utilities import unzip_file
 
 
-@click.command()
-@click.argument("input_filepath", type=click.Path(exists=True))
-@click.argument("output_filepath", type=click.Path())
-def main(input_filepath, output_filepath):
-    """Runs data processing scripts to turn raw data from (../raw) into
-    cleaned data ready to be analyzed (saved in ../processed).
+def authenticate_kaggle_api():
+    """This function is used for
+    Kaggle API authentication.
     """
-    logger = logging.getLogger(__name__)
-    logger.info("making final data set from raw data")
+    api = KaggleApi()
+    api.authenticate()
+    return api
 
 
-if __name__ == "__main__":
-    log_fmt = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-    logging.basicConfig(level=logging.INFO, format=log_fmt)
+def get_raw_kaggle(competition_name: str, file: str, path_file: str):
+    """This function get the competition
+    datasets from Kaggle API.
 
-    # not used in this stub but often useful for finding various files
-    project_dir = Path(__file__).resolve().parents[2]
+    :param competition_name: name of the competition
+    :type competition_name: str
+    :param file: name of the dataset
+    :type file: str
+    :param path_file: path defined to store the .zip
+    :type path_file: str
+    """
+    api = authenticate_kaggle_api()
+    api.competition_download_file(competition_name, file, path=path_file)
 
-    # find .env automagically by walking up directories until it's found, then
-    # load up the .env entries as environment variables
-    load_dotenv(find_dotenv())
 
-    main()
+def generate_raw(file: str):
+    """This function generates the csv dataset.
+
+    :param file: name of the dataset
+    :type file: str
+    """
+    competition_name = "home-credit-default-risk"
+    path_file = f"{directory_path}data/raw/"
+    get_raw_kaggle(competition_name, file, path_file)
+    unzip_file(f"{path_file}{file}", f"{path_file}")

@@ -1,15 +1,17 @@
 import click
 
+from data.make_dataset import generate_raw
+
 
 @click.command()
 @click.option(
     "--task",
     prompt="Choose a task to execute",
-    type=click.Choice(["preprocess", "features", "train", "predict"]),
+    type=click.Choice(["generate_raw", "preprocess", "features", "train", "predict"]),
 )
 def do_action(task):
-    if task == "preprocess":
-        print("preprocessing")
+    if task == "generate_raw":
+        generate_raw("application_train.csv")
 
 
 if __name__ == "__main__":
