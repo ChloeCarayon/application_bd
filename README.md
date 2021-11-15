@@ -3,6 +3,27 @@
 
 This project aims to apply some concepts and tools seen in the course Applications of Big Data at EFREI.
 
+## Getting Start
+
+- Install dependencies
+``` 
+make install
+```
+if issues, delete poetry.lock and re run the command above.
+
+- configure Kaggle API
+Follow the instructions below:
+https://github.com/Kaggle/kaggle-api
+If you encounter any problems, please verify your account.
+
+- Run the project 
+``` 
+make run
+```
+
+
+
+
 ## Project Organization
 ------------
 
@@ -54,18 +75,3 @@ This project aims to apply some concepts and tools seen in the course Applicatio
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
-
-
-
-## Getting Start
-
-- Install dependencies
-``` 
-make install
-```
-if issues, delete poetry.lock
-
-- Run the project 
-``` 
-make run
-```
