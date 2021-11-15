@@ -1,4 +1,3 @@
-import click
 import h2o
 import pandas as pd
 from h2o.estimators.gbm import H2OGradientBoostingEstimator
@@ -7,7 +6,10 @@ from h2o.estimators.xgboost import H2OXGBoostEstimator
 from sklearn.utils import resample
 from h2o.automl import H2OAutoML
 
-from src.models.model_parameters import MODELS_PARAMS
+from models.model_parameters import MODELS_PARAMS
+
+from var_env import directory_path
+
 
 h2o.init()
 
@@ -50,12 +52,12 @@ def define_h2o_dataframe(df: pd.DataFrame, label: str):
     return df_h2o
 
 
-def define_features(df: h2o.frame.H2OFrame, label: str):
+def define_features(df: h2o.H2OFrame, label: str):
     """This function returns the feature columns
     in a list without the label column.
 
     :param df: dataset
-    :type df: h2o.frame.H2OFrame
+    :type df: h2o.H2OFrame
     :param label: target
     :type label: str
     """
@@ -67,13 +69,13 @@ def define_features(df: h2o.frame.H2OFrame, label: str):
 
 
 def split_dataset(
-    df: h2o.frame.H2OFrame, ratio_train_test: float, ratio_validation: float
+    df: h2o.H2OFrame, ratio_train_test: float, ratio_validation: float
 ):
     """This function splits dataset
     in train, test, validation.
 
     :param df: dataset to downsample
-    :type df: h2o.frame.H2OFrame
+    :type df: h2o.H2OFrame
     :param ratio_train_test: ratio for train/test
     :type ratio_train_test: float
     :param ratio_validation: ratio for validation
@@ -119,7 +121,7 @@ def do_training(model_type: str, label: str, dataset_path: str):
     df = pd.read_csv(dataset_path)
 
     df_h2o = define_h2o_dataframe(df, label)
-    features = define_features(df, label)
+    features = define_features(df_h2o, label)
 
     train, valid, test = split_dataset(df_h2o, 0.8, 0.1)
     model.train(x=features, y=label, training_frame=train, validation_frame=valid)
@@ -127,17 +129,12 @@ def do_training(model_type: str, label: str, dataset_path: str):
     return model
 
 
-@click.command()
-@click.option(
-    "--model_type",
-    prompt="Choose a model to train",
-    type=click.Choice(["xgboost", "gradient boosting", "random forest"]),
-)
-def train_model(model_type):
+def train_model(model_type, version):
     label = "TARGET"
-    dataset_path = "../data/processed/train.csv"
+    dataset_path = f"{directory_path}/data/processed/application_train.csv"
     model = do_training(model_type, label, dataset_path)
     if model_type == "automl":
         model = model.get_best_model()
-    model_path = f"../models/{model_type}.zip"
+    model_path = f"{directory_path}/models/{version}/{model_type}.zip"
     model.download_mojo(model_path)
+
