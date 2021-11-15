@@ -38,6 +38,7 @@ def generate_raw(file: str):
     :type file: str
     """
     competition_name = "home-credit-default-risk"
-    path_file = f"{directory_path}data/raw/"
-    get_raw_kaggle(competition_name, file, path_file)
-    unzip_file(f"{path_file}{file}", f"{path_file}")
+    path_file_zip = f"{directory_path}data/external/"
+    path_file_csv = f"{directory_path}data/raw/"
+    get_raw_kaggle(competition_name, file, path_file_zip)
+    unzip_file(f"{path_file_zip}{file}", f"{path_file_csv}")
