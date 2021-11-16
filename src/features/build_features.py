@@ -13,10 +13,12 @@ def build_features(train_path: str, label: str):
     number_columns.remove('DAYS_BIRTH')
     mode_days_employed = df[df['DAYS_EMPLOYED'] != 365243]['DAYS_EMPLOYED'].mode()[0]
     df['DAYS_EMPLOYED'] = df.DAYS_EMPLOYED.apply(lambda x: fix_anomalie_employment(x, mode_days_employed))
-    do_min_max_scaler(df, number_columns)
-    categorical_cols_train = get_categorical_columns(df, 'object')
+    df, scaler = do_min_max_scaler(df, number_columns)
+    categorical_cols_train = get_type_columns(df, 'object')
     df = get_dummies_categorical(df, categorical_cols_train)
-    return df
+    features = list(df.columns)
+    features.remove(label)
+    return df, scaler, features
 
 
 def remove_percent_missing_values(df: pd.DataFrame, label: str, percent: int):
@@ -24,20 +26,21 @@ def remove_percent_missing_values(df: pd.DataFrame, label: str, percent: int):
     to_keep = missing_values[missing_values['percentage'] < percent]
     columns_to_keep = list(to_keep.index)
     df = df[columns_to_keep]
-    columns_to_keep.remove(label)
     return df
 
 
 def get_number_columns(df: pd.DataFrame):
-    return list(df.index)
+    float_columns = get_type_columns(df, "float64")
+    int_columns = get_type_columns(df, "int64")
+    number_columns = list(float_columns) + list(int_columns)
+    return number_columns
 
 
 def preprocess_numerical_features(df: pd.DataFrame, number_columns, label: str):
     if label not in df.columns:
         number_columns.remove(label)
     for feature in number_columns:
-        df[feature].fillna(df[feature].mode()[0], inplace=True)
-        df[feature] = df[feature].abs()
+        df[feature] = df[feature].fillna(df[feature].mode()[0]).abs()
     return df
 
 
@@ -59,9 +62,10 @@ def do_min_max_scaler(df: pd.DataFrame, number_columns):
     scaler = MinMaxScaler()
     scaler.fit(df[number_columns])
     df[number_columns] = scaler.transform(df[number_columns])
+    return df, scaler
 
 
-def get_categorical_columns(df: pd.DataFrame, type: str):
+def get_type_columns(df: pd.DataFrame, type: str):
     return df.select_dtypes(include=type).columns
 
 
