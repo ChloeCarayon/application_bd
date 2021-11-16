@@ -1,6 +1,16 @@
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 
+from utils import dump_pickle
+
+
+def generate_features(path: str, label: str):
+    df, scaler, features = build_features(f"{path}/train/application_train.csv", label)
+    metadata = {'scaler': scaler,
+                'features_columns': features}
+    dump_pickle(f"{path}/train/metadata", metadata)
+    df.to_csv(f"{path}/train/preprocessed_train.csv")
+
 
 def build_features(train_path: str, label: str):
     df = pd.read_csv(train_path)
