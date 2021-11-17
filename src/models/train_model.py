@@ -9,7 +9,7 @@ from h2o.automl import H2OAutoML
 from models.model_parameters import MODELS_PARAMS
 
 from var_env import directory_path
-
+import matplotlib.pyplot as plt
 
 h2o.init()
 
@@ -25,6 +25,8 @@ def do_sampling(df: pd.DataFrame, label: str, downsample_coef: float = 0.75):
     :type label: str
     :param downsample_coef: dowsampling coefficient to apply
     :type downsample_coef: float
+    :return: a new df.DataFrame which has been downsample
+    :rtype: df.DataFrame
     """
     df_majority = df[df[label] == 0]
     df_minority = df[df[label] == 1]
@@ -45,6 +47,8 @@ def define_h2o_dataframe(df: pd.DataFrame, label: str):
     :type df: pd.DataFrame
     :param label: target
     :type label: str
+    :return: a H2O DataFrame
+    :rtype: h2o.H2OFrame
     """
     df_h2o = h2o.H2OFrame(df)
     df_h2o[label].asfactor().levels()
@@ -60,6 +64,8 @@ def define_features(df: h2o.H2OFrame, label: str):
     :type df: h2o.H2OFrame
     :param label: target
     :type label: str
+    :return: a list of the features for the model
+    :rtype: list(str)
     """
     features = df.col_names
     features.remove(label)
@@ -80,6 +86,8 @@ def split_dataset(
     :type ratio_train_test: float
     :param ratio_validation: ratio for validation
     :type ratio_validation: float
+    :return: three new dataset (train, valid and test)
+    :rtype: h2o.H2OFrame
     """
     train, valid, test = df.split_frame(ratios=[ratio_train_test, ratio_validation])
     return train, valid, test
@@ -91,6 +99,8 @@ def select_model(model_type: str):
 
     :param model_type: model type
     :type model_type: str
+    :return: a specific model of H2O
+    :rtype: models
     """
     if model_type == "xgb":
         return H2OXGBoostEstimator(**MODELS_PARAMS["Xgboost"])
@@ -115,6 +125,8 @@ def do_training(model_type: str, label: str, dataset_path: str):
     :type label: str
     :param dataset_path: path to dataset
     :type dataset_path: str
+    :return: model and test set
+    :rtype: models and h2o.H2OFrame dataset
     """
     model = select_model(model_type)
 
@@ -126,15 +138,24 @@ def do_training(model_type: str, label: str, dataset_path: str):
     train, valid, test = split_dataset(df_h2o, 0.8, 0.1)
     model.train(x=features, y=label, training_frame=train, validation_frame=valid)
 
-    return model
+    return model, test
 
 
 def train_model(model_type, version):
+    """This function:
+    - get the preprocessed dataset
+    - train the correct model
+    - store it in mojo format
+
+    :param model_type: model type
+    :type model_type: str
+    :param version: version to store model
+    :type version: str
+    """
     label = "TARGET"
     dataset_path = f"{directory_path}/data/processed/application_train.csv"
-    model = do_training(model_type, label, dataset_path)
+    model, test_set = do_training(model_type, label, dataset_path)
     if model_type == "automl":
-        model = model.get_best_model()
+       model = model.get_best_model()
     model_path = f"{directory_path}/models/{version}/{model_type}.zip"
     model.download_mojo(model_path)
-
