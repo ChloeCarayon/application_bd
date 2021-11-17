@@ -1,15 +1,14 @@
 import h2o
+import matplotlib.pyplot as plt
 import pandas as pd
+from h2o.automl import H2OAutoML
 from h2o.estimators.gbm import H2OGradientBoostingEstimator
 from h2o.estimators.random_forest import H2ORandomForestEstimator
 from h2o.estimators.xgboost import H2OXGBoostEstimator
 from sklearn.utils import resample
-from h2o.automl import H2OAutoML
 
 from models.model_parameters import MODELS_PARAMS
-
 from var_env import directory_path
-import matplotlib.pyplot as plt
 
 h2o.init()
 
@@ -72,11 +71,7 @@ def define_features(df: h2o.H2OFrame, label: str):
     return features
 
 
-
-
-def split_dataset(
-    df: h2o.H2OFrame, ratio_train_test: float, ratio_validation: float
-):
+def split_dataset(df: h2o.H2OFrame, ratio_train_test: float, ratio_validation: float):
     """This function splits dataset
     in train, test, validation.
 
@@ -107,7 +102,7 @@ def select_model(model_type: str):
     elif model_type == "gbm":
         return H2OGradientBoostingEstimator(**MODELS_PARAMS["GradientBoosting"])
     elif model_type == "automl":
-        return H2OAutoML(max_models =25, balance_classes=True, seed =1)
+        return H2OAutoML(max_models=25, balance_classes=True, seed=1)
     else:
         return H2ORandomForestEstimator(**MODELS_PARAMS["RandomForest"])
 
@@ -156,6 +151,6 @@ def train_model(model_type, version):
     dataset_path = f"{directory_path}/data/processed/application_train.csv"
     model, test_set = do_training(model_type, label, dataset_path)
     if model_type == "automl":
-       model = model.get_best_model()
+        model = model.get_best_model()
     model_path = f"{directory_path}/models/{version}/{model_type}.zip"
     model.download_mojo(model_path)
