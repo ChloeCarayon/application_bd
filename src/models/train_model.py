@@ -1,5 +1,4 @@
 import h2o
-import matplotlib.pyplot as plt
 import pandas as pd
 from h2o.automl import H2OAutoML
 from h2o.estimators.gbm import H2OGradientBoostingEstimator
@@ -8,7 +7,7 @@ from h2o.estimators.xgboost import H2OXGBoostEstimator
 from sklearn.utils import resample
 
 from models.model_parameters import MODELS_PARAMS
-from var_env import directory_path
+from utils import directory_path
 
 h2o.init()
 
