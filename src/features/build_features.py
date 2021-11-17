@@ -20,6 +20,7 @@ def generate_features(path: str, label: str):
                 'features_columns': features}
     dump_pickle(f"{path}models/metadata", metadata)
     df.to_csv(f"{path}data/processed/application_train.csv")
+    print('Done')
 
 
 def build_features(path: str, label: str):

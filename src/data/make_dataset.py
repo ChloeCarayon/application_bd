@@ -2,9 +2,7 @@
 
 from kaggle.api.kaggle_api_extended import KaggleApi
 
-from var_env import directory_path
-
-from utilities import unzip_file
+from utils import directory_path, unzip_file
 
 
 def authenticate_kaggle_api():
@@ -42,3 +40,5 @@ def generate_raw(file: str):
     path_file_csv = f"{directory_path}data/raw/"
     get_raw_kaggle(competition_name, file, path_file_zip)
     unzip_file(f"{path_file_zip}{file}", f"{path_file_csv}")
+    print('Done')
+
