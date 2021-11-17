@@ -12,7 +12,7 @@ from utils import directory_path
 )
 def do_action(task):
     if task == "features":
-        generate_features(f"{directory_path}/datasets", 'TARGET')
+        generate_features(directory_path, 'TARGET')
 
 
 if __name__ == "__main__":
