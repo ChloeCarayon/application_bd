@@ -17,10 +17,11 @@ def predict(model, version):
     df = preprocess_numerical_features_test(df, numerical_columns, mode)
     df['cat_age'] = transform_dob_catage(df, 'DAYS_BIRTH')
     df = df.drop(columns=['DAYS_BIRTH'])
-    do_min_max_scaler_predict(df, numerical_columns, scaler)
+    df = do_min_max_scaler_predict(df, numerical_columns, scaler)
     categorical_cols_test = get_columns_with_type(df, 'object')
     df = get_dummies_categorical(df, categorical_cols_test)
     df = df.reindex(columns=features_columns, fill_value=0)
+    df = df[features_columns]
     return df
 
 
@@ -58,8 +59,6 @@ def preprocess_numerical_features_test(df: pd.DataFrame, numerical_columns, mode
     for feature in numerical_columns:
         if feature in mode:
             df[feature] = df[feature].fillna(mode[feature]).abs()
-        else:
-            df[feature] = 0
     return df
 
 
@@ -75,6 +74,5 @@ def do_min_max_scaler_predict(df: pd.DataFrame, numerical_columns, scaler):
     :return: modified dataframe
     :rtype: pd.DataFrame
     """
-    scaler.transform(df[numerical_columns])
     df[numerical_columns] = scaler.transform(df[numerical_columns])
     return df
