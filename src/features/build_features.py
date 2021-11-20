@@ -20,7 +20,7 @@ def generate_features(path: str, label: str):
                 'features_columns': features,
                 'mode': mode}
     dump_pickle(f"{path}models/metadata", metadata)
-    df.to_csv(f"{path}data/processed/application_train.csv")
+    df.to_csv(f"{path}data/processed/application_train.csv", index = False)
     print('Done')
 
 
@@ -45,7 +45,7 @@ def build_features(path: str, label: str):
     """
     df = pd.read_csv(path)
     df = remove_percent_missing_values(df, 35)
-    number_numerical_columns = get_numerical_columns(df)
+    number_numerical_columns = get_numerical_columns(df,  label)
     df, mode = preprocess_numerical_features(df, number_numerical_columns, label)
     df = df.drop_duplicates()
     df['cat_age'] = transform_dob_catage(df, 'DAYS_BIRTH')
@@ -78,7 +78,7 @@ def remove_percent_missing_values(df: pd.DataFrame, percent: int):
     return df
 
 
-def get_numerical_columns(df: pd.DataFrame):
+def get_numerical_columns(df: pd.DataFrame, label: str):
     """This function allows you to get the number of numerical columns in the dataframe
 
     :param df: the dataframe we want to get the number of numerical columns
@@ -89,6 +89,8 @@ def get_numerical_columns(df: pd.DataFrame):
     float_columns = get_columns_with_type(df, "float64")
     int_columns = get_columns_with_type(df, "int64")
     numerical_columns = list(float_columns) + list(int_columns)
+    if label in numerical_columns:
+        numerical_columns.remove(label)
     return numerical_columns
 
 
