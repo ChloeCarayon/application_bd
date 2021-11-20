@@ -16,12 +16,30 @@ Follow the instructions below:
 https://github.com/Kaggle/kaggle-api
 If you encounter any problems, please verify your account.
 
-- Run the project 
+###  Classical ML project
+- Run project
 ``` 
 make run
 ```
 
+###  MlFlow project
 
+```cd ``` to the ```src ``` directory.
+
+- Run the MLfLow project with or without the parameters
+```
+ poetry run python tracker.py {ntrees} {max_depth} {learn_rate} {min_rows}
+```
+example:
+``` 
+poetry run python tracker.py 200 5 0.09 5
+poetry run python tracker.py
+```
+
+- Comparing the models with MLflow UI
+``` 
+mlflow ui
+```
 
 
 ## Project Organization
