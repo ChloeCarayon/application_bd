@@ -1,47 +1,59 @@
-from src.features.build_features import transform_dob_catage, get_columns_with_type, get_dummies_categorical
-from src.utils import directory_path, load_pickle
+from features.build_features import transform_dob_catage, get_columns_with_type, get_dummies_categorical
+from utils import directory_path, load_pickle
 import h2o
 import pandas as pd
 
-from src.data.make_dataset import generate_raw
-from src.features.build_features import get_numerical_columns
+from data.make_dataset import generate_raw
+from features.build_features import get_numerical_columns
 
 
-def predict(model, version):
-    df = generate_raw("application_test.csv")
-    model, metadata = get_model_metadata(model, version)
-    numerical_columns = get_numerical_columns(df)
+def predict(model_type: str, version: str):
+    model = get_model(model_type, version)
+    df = preprocess_testset()
+    model.predict(df)
+
+
+def preprocess_testset():
+    generate_raw("application_test.csv")
+    df = pd.read_csv(f"{directory_path}data/raw/application_test.csv")
+    metadata = get_metadata()
+    numerical_columns = get_numerical_columns(df, "TARGET")
     mode = metadata.get("mode")
     scaler = metadata.get("scaler")
     features_columns = metadata.get("features_columns")
     df = preprocess_numerical_features_test(df, numerical_columns, mode)
     df['cat_age'] = transform_dob_catage(df, 'DAYS_BIRTH')
-    df = df.drop(columns=['DAYS_BIRTH'])
+    numerical_columns = [x for x in numerical_columns if x in features_columns]
     df = do_min_max_scaler_predict(df, numerical_columns, scaler)
     categorical_cols_test = get_columns_with_type(df, 'object')
     df = get_dummies_categorical(df, categorical_cols_test)
     df = df.reindex(columns=features_columns, fill_value=0)
     df = df[features_columns]
-    return df
+    df.to_csv(f"{directory_path}data/processed/application_test.csv", index=False)
+    df_h2o = h2o.H2OFrame(df)
+    return df_h2o
 
 
-def get_model_metadata(model_type, version):
-    """This function allows you to get the model and the metadata
+def get_model(model_type: str, version: str):
 
     :param model_type: model type
     :type model_type: str
     :param version: version of the model
-    :type version: int
+    :type version: str
     :return: model
     :rtype:
+    path_model = f"{directory_path}models/{version}/{model_type}.zip"
+    model = h2o.import_mojo(path_model)
+    return model
+
+
+def get_metadata():
     :return: metadata
     :rtype:
     """
-    path_model = f"{directory_path}/models/{version}/{model_type}.zip"
-    model = h2o.import_mojo(path_model)
-    path_metadata = f"{directory_path}/models/metadata.pickle"
+    path_metadata = f"{directory_path}models/metadata"
     metadata = load_pickle(path_metadata)
-    return model, metadata
+    return metadata
 
 
 def preprocess_numerical_features_test(df: pd.DataFrame, numerical_columns, mode):
@@ -76,3 +88,10 @@ def do_min_max_scaler_predict(df: pd.DataFrame, numerical_columns, scaler):
     """
     df[numerical_columns] = scaler.transform(df[numerical_columns])
     return df
+
+
+def set_same_columns(df: pd.DataFrame, features_columns):
+    columns = list(df.columns)
+    for column in features_columns:
+        if column not in columns:
+            df[column] = 0
