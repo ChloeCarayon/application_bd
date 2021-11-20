@@ -4,6 +4,7 @@ from models.train_model import train_model
 
 
 from features.build_features import generate_features
+from models.predict_model import predict
 from utils import directory_path
 from data.make_dataset import generate_raw
 
@@ -24,6 +25,8 @@ def do_classic_action(task):
         generate_features(directory_path, 'TARGET')
     if task == "train":
         get_parameters_training()
+    if task == "predict":
+        get_parameters_predict()
 
 
 @click.command()
@@ -35,6 +38,17 @@ def do_classic_action(task):
 @click.option("--version", prompt="Version number", default="0.0.1", type=str)
 def get_parameters_training(model_type, version):
     train_model(model_type, version)
+
+
+@click.command()
+@click.option(
+    "--model_type",
+    prompt="Choose a model to train",
+    type=click.Choice(["xgboost", "gmb", "rf", "automl"]),
+)
+@click.option("--version", prompt="Version number", default="0.0.1", type=str)
+def get_parameters_predict(model_type, version):
+    predict(model_type, version)
 
 if __name__ == "__main__":
     do_classic_action()
