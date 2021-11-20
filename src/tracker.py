@@ -10,8 +10,6 @@ from data.make_dataset import generate_raw
 from features.build_features import generate_features
 from utils import directory_path
 
-h2o.init()
-
 
 def get_preprocessed_h2o_dataset():
     """This function allows you to generate
@@ -86,7 +84,8 @@ def train_xgboost_model(df_h2o_train: h2o.H2OFrame, df_h2o_validation: h2o.H2OFr
     :param min_rows: min rows for xgboost model
     :type min_rows: int
     """
-    with mlflow.start_run():
+
+    with mlflow.start_run(run_name="Experimentation"):
         xgboost = H2OXGBoostEstimator(ntrees= ntrees, max_depth=max_depth,
                                       learn_rate=learn_rate, min_rows=min_rows,
                                       sample_rate= 0.9, col_sample_rate_per_tree=0.9,
@@ -104,8 +103,10 @@ def train_xgboost_model(df_h2o_train: h2o.H2OFrame, df_h2o_validation: h2o.H2OFr
 
         mlflow.log_metrics(eval_metrics(xgboost))
 
-        # log model
         mlflow.h2o.log_model(xgboost, "model")
+
+        mlflow.tracking.get_tracking_uri()
+        mlflow.end_run()
 
 def eval_metrics(xgboost):
     """This function evaluate the model metrics.
@@ -145,10 +146,12 @@ def train_mlflow(ntrees: int = 200, max_depth:int = 10,
     :param min_rows: min rows for xgboost model
     :type min_rows: int
     """
+    h2o.init()
     df_h2o_train, df_h2o_valid, features, label = get_preprocessed_h2o_dataset()
     train_xgboost_model(df_h2o_train, df_h2o_valid, features,label,
                         ntrees, max_depth,
                         learn_rate, min_rows)
+    h2o.cluster().shutdown()
 
 if __name__ == "__main__":
     ntrees = int(sys.argv[1]) if len(sys.argv) > 1 else 200
