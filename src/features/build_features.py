@@ -55,6 +55,7 @@ def build_features(path: str, label: str):
     df = get_dummies_categorical(df, categorical_cols_train)
     features = list(df.columns)
     features.remove(label)
+    df[label] = df[label].astype(int)
     return df, scaler, features
 
 

@@ -28,9 +28,10 @@ def do_sampling(df: pd.DataFrame, label: str, downsample_coef: float = 0.75):
     """
     df_majority = df[df[label] == 0]
     df_minority = df[df[label] == 1]
-    samples_to_keep = df_majority - df_majority * downsample_coef
+    samples_to_keep = int(df_majority.shape[0] - df_majority.shape[0] * downsample_coef)
     df_majority_downsampled = resample(
-        df_majority, replace=False, n_samples=samples_to_keep
+        df_majority, replace=True,
+        n_samples=samples_to_keep, random_state=1
     )
     df_up_down_sampled = pd.concat([df_majority_downsampled, df_minority])
     return df_up_down_sampled
@@ -125,7 +126,7 @@ def do_training(model_type: str, label: str, dataset_path: str):
     model = select_model(model_type)
 
     df = pd.read_csv(dataset_path)
-
+    df = do_sampling(df, label)
     df_h2o = define_h2o_dataframe(df, label)
     features = define_features(df_h2o, label)
 
