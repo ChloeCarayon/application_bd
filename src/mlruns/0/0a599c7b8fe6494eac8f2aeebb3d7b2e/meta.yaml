@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/chloe/git_projects/applications_bd/src/mlruns/0/0a599c7b8fe6494eac8f2aeebb3d7b2e/artifacts
+end_time: 1637412979531
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+name: ''
+run_id: 0a599c7b8fe6494eac8f2aeebb3d7b2e
+run_uuid: 0a599c7b8fe6494eac8f2aeebb3d7b2e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1637412748281
+status: 3
+tags: []
+user_id: chloe

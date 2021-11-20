@@ -1,0 +1,11 @@
+channels:
+- conda-forge
+dependencies:
+- python=3.7.3
+- pip
+- pip:
+  - mlflow
+  - h2o==3.34.0.3
+  - ipykernel==5.4.3
+  - matplotlib==3.3.3
+name: mlflow-env
