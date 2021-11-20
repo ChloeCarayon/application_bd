@@ -8,12 +8,24 @@ from features.build_features import get_numerical_columns
 
 
 def predict(model_type: str, version: str):
+    """This function allows you to make predictions
+
+    :param model_type: model type
+    :type model_type: str
+    :param version: version of the model
+    :type version: str
+    """
     model = get_model(model_type, version)
     df = preprocess_testset()
     model.predict(df)
 
 
 def preprocess_testset():
+    """This function allows you to preprocess the test set
+
+    :return: df_h2o
+    :rtype: pd.DataFrame
+    """
     generate_raw("application_test.csv")
     df = pd.read_csv(f"{directory_path}data/raw/application_test.csv")
     metadata = get_metadata()
@@ -35,6 +47,7 @@ def preprocess_testset():
 
 
 def get_model(model_type: str, version: str):
+    """This function allows you to get the model
 
     :param model_type: model type
     :type model_type: str
@@ -42,12 +55,15 @@ def get_model(model_type: str, version: str):
     :type version: str
     :return: model
     :rtype:
+    """
     path_model = f"{directory_path}models/{version}/{model_type}.zip"
     model = h2o.import_mojo(path_model)
     return model
 
 
 def get_metadata():
+    """This function allows you to get the metadata
+
     :return: metadata
     :rtype:
     """
