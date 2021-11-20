@@ -12,6 +12,7 @@ pylint = "^2.11.1"
 click = "^8.0.3"
 h2o = "^3.34.0"
 kaggle = "^1.5.12"
+mlflow = "^1.21.0"
 
 
 [tool.poetry.dev-dependencies]
