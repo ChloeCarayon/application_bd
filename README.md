@@ -24,6 +24,8 @@ make run
 
 ###  MlFlow project
 
+#### From src directory
+
 ```cd ``` to the ```src ``` directory.
 
 - Run the MLfLow project with or without the parameters
@@ -38,9 +40,29 @@ poetry run python tracker.py
 
 - Comparing the models with MLflow UI
 ``` 
-mlflow ui
+poetry run mlflow ui
 ```
 
+-Running MlFlow server in local
+``` 
+poetry run mlflow models serve -m runs:/0a599c7b8fe6494eac8f2aeebb3d7b2e/model --port 1234 
+```
+
+#### From application_bd directory
+```cd ..``` to the principal directory.
+
+- Run to train model with default paramaters
+```
+poetry run mlflow run src --no-conda
+```
+
+- Run to train model with your paramaters
+```
+ poetry run mlflow run src --no-conda -P ntrees=250 -P max_depth=3 -P learn_rate=0.3 -P min_rows=8
+```
+
+- Specify server
+```  poetry run mlflow server -m runs:/ac0a34dbf08345d3bc37563b6ae2b700/model --port 1234 --no-conda ```
 
 ## Project Organization
 ------------

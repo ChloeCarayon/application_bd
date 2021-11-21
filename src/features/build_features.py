@@ -29,6 +29,7 @@ def build_features(path: str, label: str):
     - build the preprocessed dataframe
     - generate the MinMax scaler
     - generate a list of the features
+    - generate a dictionary of mode for numerical values
 
     :param path: path of the dataset to preprocessed
     :type path: str
@@ -44,6 +45,7 @@ def build_features(path: str, label: str):
     :rtype:
     """
     df = pd.read_csv(path)
+    df = df.drop(columns=['SK_ID_CURR'])
     df = remove_percent_missing_values(df, 35)
     number_numerical_columns = get_numerical_columns(df,  label)
     df, mode = preprocess_numerical_features(df, number_numerical_columns, label)
@@ -57,17 +59,19 @@ def build_features(path: str, label: str):
     categorical_cols_train = get_columns_with_type(df, 'object')
     df = get_dummies_categorical(df, categorical_cols_train)
     features = list(df.columns)
-    features.remove(label)
+    #features.remove(label)
     df[label] = df[label].astype(int)
     return df, scaler, features, mode
 
 
 def remove_percent_missing_values(df: pd.DataFrame, percent: int):
-    """This function allows you to do feature selection/reduction by deleting features with more than x% of NULL/NA values
+    """This function allows you to do feature selection/reduction by
+    deleting features with more than x% of NULL/NA values.
 
     :param df: dataframe to modify
     :type df: pd.DataFrame
-    :param percent: a limit percentage to fix in order to remove features with more than this percentage of NULL/NA values
+    :param percent: a limit percentage to fix in order to remove
+                    features with more than this percentage of NULL/NA values
     :type percent: int
     :return: the modified dataframe
     :rtype: pd.DataFrame
@@ -77,6 +81,7 @@ def remove_percent_missing_values(df: pd.DataFrame, percent: int):
     columns_to_keep = list(to_keep.index)
     df = df[columns_to_keep]
     return df
+
 
 
 def get_numerical_columns(df: pd.DataFrame, label: str):

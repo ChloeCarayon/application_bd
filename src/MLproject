@@ -1,1 +1,10 @@
 name: mlflow project
+
+entry_points:
+  main:
+    parameters:
+      ntrees: {type: int, default: 200}
+      max_depth: {type: int, default: 10}
+      learn_rate: {type: float, default: 0.01}
+      min_rows: {type: int, default: 5}
+    command: "python tracker.py {ntrees} {max_depth} {learn_rate} {min_rows}"

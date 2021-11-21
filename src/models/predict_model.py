@@ -5,10 +5,10 @@ import pandas as pd
 
 from data.make_dataset import generate_raw
 from features.build_features import get_numerical_columns
+from utils import get_metadata, get_model, load_pickle
 
-
-def predict(model_type: str, version: str):
-    """This function allows you to make predictions
+def predict_h2o(model_type: str, version: str):
+    """This function allows you to make predictions with H2O models
 
     :param model_type: model type
     :type model_type: str
@@ -16,14 +16,32 @@ def predict(model_type: str, version: str):
     :type version: str
     """
     model = get_model(model_type, version)
-    df = preprocess_testset()
-    model.predict(df)
+    df = h2o.H2OFrame(preprocess_testset())
+    prediction_id = pd.read_csv(f"{directory_path}data/raw/application_test.csv")['SK_ID_CURR']
+    prediction = model.predict(df).as_data_frame().reset_index()
+    pred = pd.concat([prediction_id,  prediction],  axis=1, ignore_index=True).rename(columns={0: "SK_ID_CURR", 1: "index", 2: "Predict", 3: "P0", 4:"P1" })
+    pred = pred.drop(columns=['index'])
+    pred.to_csv(f"{directory_path}/models/{version}/{model_type}/predictions.csv", index=False)
 
+def predict_xgboost(version: str):
+    """This function allows you to make predictions with xgboostClassifier Model
+
+    :param model_type: model type
+    :type model_type: str
+    :param version: version of the model
+    :type version: str
+    """
+    model = load_pickle(f"{directory_path}/models/{version}/xgboostClassifier/xgboostclassifier")
+    df = preprocess_testset()
+    prediction_id = pd.read_csv(f"{directory_path}data/raw/application_test.csv")['SK_ID_CURR']
+    prediction = pd.Series(model.predict(df))
+    pred = pd.concat([prediction_id,  prediction],  axis=1, ignore_index=True).rename(columns={0: "SK_ID_CURR", 1: "Prediction"})
+    pred.to_csv(f"{directory_path}/models/{version}/xgboostClassifier/predictions.csv", index=False)
 
 def preprocess_testset():
     """This function allows you to preprocess the test set
 
-    :return: df_h2o
+    :return: df
     :rtype: pd.DataFrame
     """
     generate_raw("application_test.csv")
@@ -42,34 +60,8 @@ def preprocess_testset():
     df = df.reindex(columns=features_columns, fill_value=0)
     df = df[features_columns]
     df.to_csv(f"{directory_path}data/processed/application_test.csv", index=False)
-    df_h2o = h2o.H2OFrame(df)
-    return df_h2o
+    return df
 
-
-def get_model(model_type: str, version: str):
-    """This function allows you to get the model
-
-    :param model_type: model type
-    :type model_type: str
-    :param version: version of the model
-    :type version: str
-    :return: model
-    :rtype:
-    """
-    path_model = f"{directory_path}models/{version}/{model_type}.zip"
-    model = h2o.import_mojo(path_model)
-    return model
-
-
-def get_metadata():
-    """This function allows you to get the metadata
-
-    :return: metadata
-    :rtype:
-    """
-    path_metadata = f"{directory_path}models/metadata"
-    metadata = load_pickle(path_metadata)
-    return metadata
 
 
 def preprocess_numerical_features_test(df: pd.DataFrame, numerical_columns, mode):
