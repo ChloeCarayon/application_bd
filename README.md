@@ -48,7 +48,7 @@ poetry run mlflow ui
 poetry run mlflow models serve -m runs:/0a599c7b8fe6494eac8f2aeebb3d7b2e/model --port 1234 
 ```
 
-#### From src directory
+#### From application_bd directory
 ```cd ..``` to the principal directory.
 
 - Run to train model with default paramaters
@@ -62,7 +62,7 @@ poetry run mlflow run src --no-conda
 ```
 
 - Specify server
-
+```  poetry run mlflow server -m runs:/ac0a34dbf08345d3bc37563b6ae2b700/model --port 1234 --no-conda ```
 
 ## Project Organization
 ------------

@@ -2,7 +2,7 @@ artifact_uri: file:///Users/chloe/git_projects/applications_bd/mlruns/0/5c1cbea9
 end_time: 1637429183045
 entry_point_name: ''
 experiment_id: '0'
-lifecycle_stage: active
+lifecycle_stage: deleted
 name: ''
 run_id: 5c1cbea952164f0ab39aab91c98e7a62
 run_uuid: 5c1cbea952164f0ab39aab91c98e7a62
