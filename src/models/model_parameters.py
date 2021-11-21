@@ -17,7 +17,7 @@ MODELS_PARAMS = {
         "seed": 1,
         "max_depth": 9,
         "stopping_rounds": 5,
-        "stopping_metric": "auc",
+        "stopping_metric": "AUC",
     },
     "RandomForest": {
         "nfolds": 5,

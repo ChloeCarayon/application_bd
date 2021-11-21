@@ -4,7 +4,7 @@ import pandas as pd
 from matplotlib import pyplot as plt
 
 
-def shap_visualisation_xgboost(version:str, point:int, do_train=True):
+def shap_visualisation_xgboost(version:str, point:int, do_train=False):
     """This function do the shap visualisation
 
     :param version: version
