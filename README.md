@@ -94,6 +94,8 @@ poetry run mlflow run src --no-conda
     ├── src                <- Source code for use in this project.
     │   ├── __init__.py    <- Makes src a Python module
     │   ├── main.py        <- command line interfaces to choose action to perform
+    │   ├── tracker.py     <- mlflow tracker   
+    │   ├── utils.py       <- utils   
     │   │
     │   ├── data           <- Scripts to download or generate data
     │   │   └── make_dataset.py
@@ -105,9 +107,11 @@ poetry run mlflow run src --no-conda
     │   │   │                 predictions
     │   │   ├── predict_model.py
     │   │   └── train_model.py
+    │   │   └── model_parameters.py
     │   │
     │   └── visualization  <- Scripts to create exploratory and results oriented visualizations
-    │       └── visualize.py
+    │       └── do_explicability_h2o.py
+    │       └── do_explicability_xboost.py
     │
     └── tox.ini            <- tox file with settings for running tox; see tox.readthedocs.io
 
