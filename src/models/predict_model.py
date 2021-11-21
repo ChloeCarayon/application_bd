@@ -17,7 +17,11 @@ def predict_h2o(model_type: str, version: str):
     """
     model = get_model(model_type, version)
     df = h2o.H2OFrame(preprocess_testset())
-    model.predict(df)
+    prediction_id = pd.read_csv(f"{directory_path}data/raw/application_test.csv")['SK_ID_CURR']
+    prediction = model.predict(df).as_data_frame().reset_index()
+    pred = pd.concat([prediction_id,  prediction],  axis=1, ignore_index=True).rename(columns={0: "SK_ID_CURR", 1: "index", 2: "Predict", 3: "P0", 4:"P1" })
+    pred = pred.drop(columns=['index'])
+    pred.to_csv(f"{directory_path}/models/{version}/{model_type}/predictions.csv", index=False)
 
 def predict_xgboost(version: str):
     """This function allows you to make predictions with xgboostClassifier Model
@@ -27,9 +31,12 @@ def predict_xgboost(version: str):
     :param version: version of the model
     :type version: str
     """
-    model = load_pickle(f"{directory_path}/models/{version}/xgboostclassifier")
+    model = load_pickle(f"{directory_path}/models/{version}/xgboostClassifier/xgboostclassifier")
     df = preprocess_testset()
-    model.predict(df)
+    prediction_id = pd.read_csv(f"{directory_path}data/raw/application_test.csv")['SK_ID_CURR']
+    prediction = pd.Series(model.predict(df))
+    pred = pd.concat([prediction_id,  prediction],  axis=1, ignore_index=True).rename(columns={0: "SK_ID_CURR", 1: "Prediction"})
+    pred.to_csv(f"{directory_path}/models/{version}/xgboostClassifier/predictions.csv", index=False)
 
 def preprocess_testset():
     """This function allows you to preprocess the test set

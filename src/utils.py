@@ -78,7 +78,7 @@ def get_model(model_type: str, version: str):
     :return: model
     :rtype:
     """
-    path_model = f"{directory_path}models/{version}/{model_type}.zip"
+    path_model = f"{directory_path}models/{version}/{model_type}/{model_type}.zip"
     model = h2o.import_mojo(path_model)
     return model
 
