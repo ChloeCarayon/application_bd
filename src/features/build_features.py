@@ -15,11 +15,12 @@ def generate_features(path: str, label: str):
     :param label: label
     :type label: str
     """
-    df, scaler, features = build_features(f"{path}data/raw/application_train.csv", label)
+    df, scaler, features, mode = build_features(f"{path}data/raw/application_train.csv", label)
     metadata = {'scaler': scaler,
-                'features_columns': features}
+                'features_columns': features,
+                'mode': mode}
     dump_pickle(f"{path}models/metadata", metadata)
-    df.to_csv(f"{path}data/processed/application_train.csv")
+    df.to_csv(f"{path}data/processed/application_train.csv", index = False)
     print('Done')
 
 
@@ -28,6 +29,7 @@ def build_features(path: str, label: str):
     - build the preprocessed dataframe
     - generate the MinMax scaler
     - generate a list of the features
+    - generate a dictionary of mode for numerical values
 
     :param path: path of the dataset to preprocessed
     :type path: str
@@ -39,32 +41,37 @@ def build_features(path: str, label: str):
     :rtype: MinMaxScaler
     :return: a list of the features
     :rtype: list
+    :return: dictionary of numerical columns and associated mode
+    :rtype:
     """
     df = pd.read_csv(path)
+    df = df.drop(columns=['SK_ID_CURR'])
     df = remove_percent_missing_values(df, 35)
-    number_columns = get_number_columns(df)
-    df = preprocess_numerical_features(df, number_columns, label)
+    number_numerical_columns = get_numerical_columns(df,  label)
+    df, mode = preprocess_numerical_features(df, number_numerical_columns, label)
     df = df.drop_duplicates()
     df['cat_age'] = transform_dob_catage(df, 'DAYS_BIRTH')
     df = df.drop(columns=['DAYS_BIRTH'])
-    number_columns.remove('DAYS_BIRTH')
+    number_numerical_columns.remove('DAYS_BIRTH')
     mode_days_employed = df[df['DAYS_EMPLOYED'] != 365243]['DAYS_EMPLOYED'].mode()[0]
     df['DAYS_EMPLOYED'] = df.DAYS_EMPLOYED.apply(lambda x: fix_anomalie_employment(x, mode_days_employed))
-    df, scaler = do_min_max_scaler(df, number_columns)
+    df, scaler = do_min_max_scaler(df, number_numerical_columns)
     categorical_cols_train = get_columns_with_type(df, 'object')
     df = get_dummies_categorical(df, categorical_cols_train)
     features = list(df.columns)
-    features.remove(label)
+    #features.remove(label)
     df[label] = df[label].astype(int)
-    return df, scaler, features
+    return df, scaler, features, mode
 
 
 def remove_percent_missing_values(df: pd.DataFrame, percent: int):
-    """This function allows you to do feature selection/reduction by deleting features with more than x% of NULL/NA values
+    """This function allows you to do feature selection/reduction by
+    deleting features with more than x% of NULL/NA values.
 
     :param df: dataframe to modify
     :type df: pd.DataFrame
-    :param percent: a limit percentage to fix in order to remove features with more than this percentage of NULL/NA values
+    :param percent: a limit percentage to fix in order to remove
+                    features with more than this percentage of NULL/NA values
     :type percent: int
     :return: the modified dataframe
     :rtype: pd.DataFrame
@@ -76,37 +83,44 @@ def remove_percent_missing_values(df: pd.DataFrame, percent: int):
     return df
 
 
-def get_number_columns(df: pd.DataFrame):
-    """This function allows you to get the number of columns in the dataframe
 
-    :param df: the dataframe we want to get the number of columns
+def get_numerical_columns(df: pd.DataFrame, label: str):
+    """This function allows you to get the number of numerical columns in the dataframe
+
+    :param df: the dataframe we want to get the number of numerical columns
     :type df: pd.DataFrame
-    :return: the number of columns
+    :return: list of numerical columns
     :rtype: list
     """
     float_columns = get_columns_with_type(df, "float64")
     int_columns = get_columns_with_type(df, "int64")
-    number_columns = list(float_columns) + list(int_columns)
-    return number_columns
+    numerical_columns = list(float_columns) + list(int_columns)
+    if label in numerical_columns:
+        numerical_columns.remove(label)
+    return numerical_columns
 
 
-def preprocess_numerical_features(df: pd.DataFrame, number_columns, label: str):
-    """This function allows you to fill NULL/NA values withe the mode
+def preprocess_numerical_features(df: pd.DataFrame, numerical_columns, label: str):
+    """This function allows you to fill NULL/NA values with the mode
 
     :param df: the dataframe to preprocessed
     :type df: pd.DataFrame
-    :param number_columns: the number of columns in the dataframe
-    :type number_columns: int
+    :param numerical_columns: list of numerical columns in the dataframe
+    :type numerical_columns: list
     :param label: label
     :type label: str
     :return: the modified dataframe
     :rtype: pd.DataFrame
+    :return: dictionary of numerical columns and associated mode
+    :rtype:
     """
     if label not in df.columns:
-        number_columns.remove(label)
-    for feature in number_columns:
+        numerical_columns.remove(label)
+    mode = {}
+    for feature in numerical_columns:
+        mode[feature] = df[feature].mode()[0]
         df[feature] = df[feature].fillna(df[feature].mode()[0]).abs()
-    return df
+    return df, mode
 
 
 def transform_dob_catage(df: pd.DataFrame, days_birth: str):
@@ -141,23 +155,23 @@ def fix_anomalie_employment(value, mode):
     return value
 
 
-def do_min_max_scaler(df: pd.DataFrame, number_columns):
+def do_min_max_scaler(df: pd.DataFrame, numerical_columns):
     """This function allows you to:
      - transform features by scaling each feature to a given range
      - store the scaler
 
     :param df: dataframe to scale
     :type df:pd.DataFrame
-    :param number_columns: the number of columns in the dataframe
-    :type number_columns: int
+    :param numerical_columns: list of numerical columns in the dataframe
+    :type numerical_columns: list
     :return: modified dataframe
     :rtype: pd.DataFrame
     :return: scaler
     :rtype: MinMaxScaler
     """
     scaler = MinMaxScaler()
-    scaler.fit(df[number_columns])
-    df[number_columns] = scaler.transform(df[number_columns])
+    scaler.fit(df[numerical_columns])
+    df[numerical_columns] = scaler.transform(df[numerical_columns])
     return df, scaler
 
 

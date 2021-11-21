@@ -7,7 +7,14 @@ from h2o.estimators.xgboost import H2OXGBoostEstimator
 from sklearn.utils import resample
 
 from models.model_parameters import MODELS_PARAMS
-from utils import directory_path
+from utils import directory_path, define_h2o_dataframe, dump_pickle, dump_json_object
+#from visualization.do_explicability import do_visualisation
+from sklearn.model_selection import train_test_split
+
+from xgboost import XGBClassifier
+
+from sklearn.metrics import f1_score, roc_auc_score, matthews_corrcoef, classification_report
+
 
 h2o.init()
 
@@ -26,33 +33,16 @@ def do_sampling(df: pd.DataFrame, label: str, downsample_coef: float = 0.75):
     :return: a new df.DataFrame which has been downsample
     :rtype: df.DataFrame
     """
+
     df_majority = df[df[label] == 0]
     df_minority = df[df[label] == 1]
-    samples_to_keep = int(df_majority.shape[0] - df_majority.shape[0] * downsample_coef)
+    #samples_to_keep = int(df_majority.shape[0] - df_majority.shape[0] * downsample_coef)
     df_majority_downsampled = resample(
         df_majority, replace=True,
-        n_samples=samples_to_keep, random_state=1
+        n_samples=40000, random_state=1
     )
     df_up_down_sampled = pd.concat([df_majority_downsampled, df_minority])
     return df_up_down_sampled
-
-
-def define_h2o_dataframe(df: pd.DataFrame, label: str):
-    """This function transforms a pandas DataFrame
-    into H2O DataFrame.
-    It also defines the target column.
-
-    :param df: dataset
-    :type df: pd.DataFrame
-    :param label: target
-    :type label: str
-    :return: a H2O DataFrame
-    :rtype: h2o.H2OFrame
-    """
-    df_h2o = h2o.H2OFrame(df)
-    df_h2o[label].asfactor().levels()
-    df_h2o[label] = df_h2o[label].asfactor()
-    return df_h2o
 
 
 def define_features(df: h2o.H2OFrame, label: str):
@@ -71,21 +61,26 @@ def define_features(df: h2o.H2OFrame, label: str):
     return features
 
 
-def split_dataset(df: h2o.H2OFrame, ratio_train_test: float, ratio_validation: float):
+def split_dataset_h2o(df: pd.DataFrame, label: str, ratio_validation: float = 0.2):
     """This function splits dataset
-    in train, test, validation.
+    in train, validation h2o dataframe.
 
     :param df: dataset to downsample
-    :type df: h2o.H2OFrame
-    :param ratio_train_test: ratio for train/test
+    :type df: pd.DataFrame
+    :param label: target
+    :type label: str
+    :param ratio_train_test: ratio for train/validation
     :type ratio_train_test: float
-    :param ratio_validation: ratio for validation
-    :type ratio_validation: float
     :return: three new dataset (train, valid and test)
     :rtype: h2o.H2OFrame
     """
-    train, valid, test = df.split_frame(ratios=[ratio_train_test, ratio_validation])
-    return train, valid, test
+    df_train, df_valid = train_test_split(df, stratify=df[label], test_size=ratio_validation, random_state=42)
+
+    df_train.to_csv(f"{directory_path}visualisation/h2o_xgboost/train_set.csv", index=False)
+
+    df_train_h2o =define_h2o_dataframe(df_train, label)
+    df_valid_h2o =define_h2o_dataframe(df_valid, label)
+    return df_train_h2o, df_valid_h2o
 
 
 def select_model(model_type: str):
@@ -97,9 +92,10 @@ def select_model(model_type: str):
     :return: a specific model of H2O
     :rtype: models
     """
-    if model_type == "xgb":
+    print(model_type)
+    if model_type == "xgboost":
         return H2OXGBoostEstimator(**MODELS_PARAMS["Xgboost"])
-    elif model_type == "gbm":
+    elif model_type == "gmb":
         return H2OGradientBoostingEstimator(**MODELS_PARAMS["GradientBoosting"])
     elif model_type == "automl":
         return H2OAutoML(max_models=25, balance_classes=True, seed=1)
@@ -124,19 +120,28 @@ def do_training(model_type: str, label: str, dataset_path: str):
     :rtype: models and h2o.H2OFrame dataset
     """
     model = select_model(model_type)
-
+    print(type(model))
     df = pd.read_csv(dataset_path)
     df = do_sampling(df, label)
-    df_h2o = define_h2o_dataframe(df, label)
-    features = define_features(df_h2o, label)
-
-    train, valid, test = split_dataset(df_h2o, 0.8, 0.1)
+    train, valid = split_dataset_h2o(df, label, 0.2)
+    features = define_features(train, label)
     model.train(x=features, y=label, training_frame=train, validation_frame=valid)
 
-    return model, test
+    perf = model.model_performance(valid)
+    metrics = {
+        "f1" : model.F1()[0][1],
+        "f05" : model.F0point5()[0][1],
+        "f2" : model.F2()[0][1],
+        "auc" : model.auc(),
+        "mcc" : model.mcc()[0][1],
+        "aucpr" : model.aucpr()
+    }
+
+    return model, metrics
 
 
-def train_model(model_type, version):
+
+def train_model_h2o(model_type, version):
     """This function:
     - get the preprocessed dataset
     - train the correct model
@@ -149,8 +154,31 @@ def train_model(model_type, version):
     """
     label = "TARGET"
     dataset_path = f"{directory_path}/data/processed/application_train.csv"
-    model, test_set = do_training(model_type, label, dataset_path)
+    model, metrics = do_training(model_type, label, dataset_path)
     if model_type == "automl":
         model = model.get_best_model()
     model_path = f"{directory_path}/models/{version}/{model_type}.zip"
     model.download_mojo(model_path)
+    dump_json_object(f"{directory_path}/models/{version}/{model_type}_metrics.json", metrics)
+
+
+def train_model_xboost(version):
+    label = 'TARGET'
+    dataset_path = f"{directory_path}/data/processed/application_train.csv"
+    df = pd.read_csv(dataset_path)
+    df = do_sampling(df, label)
+    df_train, df_test = train_test_split(df, stratify=df[label], test_size=0.2)
+
+    model = XGBClassifier(**MODELS_PARAMS['XgboostClassifier'])
+    model.fit(df_train.drop(columns=[label]), df_train[label])
+    prediction = model.predict(df_test.drop(columns=[label]))
+    metrics = {
+        "f1score": f1_score(df_test[label], prediction, average='macro'),
+        "auc":roc_auc_score(df_test[label], prediction),
+        "mcc": matthews_corrcoef(df_test[label], prediction),
+        "classification_report": classification_report(df_test[label], prediction)
+    }
+    print(metrics)
+    dump_json_object(f"{directory_path}/models/{version}/xgboostclassifier_metrics.json", metrics)
+    dump_pickle(f"{directory_path}/models/{version}/xgboostclassifier", model)
+    df_train.to_csv(f"{directory_path}visualisation/xgboost/train_set.csv", index=False)
