@@ -98,8 +98,7 @@ For **data preparation (preprocessing) and feature engineering**: feature select
         We also implement a simple xgboost classifier in order to be used later in the visualisation part.
         With H2O, the metrics are directly accessible and visible as we can see on the interface 
         Whereas for xgboost model, we compute a dictionary containing the different metrics used it for the model evaluation.
-        We store models as followed, given a version we store the model in mojo or pickle format.
-        ![](https://i.imgur.com/0WCj2Bf.png)
+        We store models as followed, given a version we store the model in mojo or pickle format.   ![](https://i.imgur.com/SCmT8yy.png)
 
     - **predictions models**: we collected metadata and models in respectivelly pickle and MOJO format and then did preprocessing / feature engineering on the test set using the previously created functions for the preprocessing part. Predictions are accessible in the directory of the model which has done the prediction. With xgboost H2O model, we get the following predictions:![](https://i.imgur.com/ofWMJ1j.png)       With xgboost classifier model, we get ![](https://i.imgur.com/R6gubH8.png)
     
