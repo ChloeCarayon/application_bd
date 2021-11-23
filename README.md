@@ -1,26 +1,49 @@
+**Authors**: CARAYON Chloé - SPATZ Cécile (BD2)
+**Date**: 21/11/2021
+___
 # Applications of Big Data
-==============================
+___
 
 This project aims to apply some concepts and tools seen in the course Applications of Big Data at EFREI.
+In order to run it, please install and configure poetry.
 
 ## Getting Start
+---
 
-- Install dependencies
+- One can find the report [here](https://github.com/ChloeCarayon/application_bd/blob/develop/reports/CARAYON_SPATZ_Report.md). 
+
+
+- We use poetry for our environment. 
+One can use the already build environment OR re-install it:
 ``` 
 make install
 ```
 if issues, delete poetry.lock and re run the command above.
 
-- configure Kaggle API
+
+- To clean the code for production:
+``` 
+make check
+```
+
+- You need to configure your Kaggle API if you want to generate the datasets.
 Follow the instructions below:
 https://github.com/Kaggle/kaggle-api
-If you encounter any problems, please verify your account.
+If you encounter any issues, please verify your account.
 
 ###  Classical ML project
 - Run project
 ``` 
 make run
 ```
+
+**Click** library allows you to select the action you want to do.
+
+- H20 server 
+http://127.0.0.1:54331
+From the server, to import your H20 model Mojo format you can get them from models directory or mlruns directories.
+
+- Sphinx documentation [here](https://github.com/ChloeCarayon/application_bd/blob/master/docs/build/html/index.html)
 
 ###  MlFlow project
 
@@ -49,6 +72,7 @@ poetry run mlflow models serve -m runs:/0a599c7b8fe6494eac8f2aeebb3d7b2e/model -
 ```
 
 #### From application_bd directory
+
 ```cd ..``` to the principal directory.
 
 - Run to train model with default paramaters
@@ -65,9 +89,10 @@ poetry run mlflow run src --no-conda
 ```  poetry run mlflow server -m runs:/ac0a34dbf08345d3bc37563b6ae2b700/model --port 1234 --no-conda ```
 
 ## Project Organization
-------------
 
-    ├── LICENSE
+--- 
+
+
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
     ├── data
@@ -76,19 +101,14 @@ poetry run mlflow run src --no-conda
     │   ├── processed      <- The final, canonical data sets for modeling.
     │   └── raw            <- The original, immutable data dump.
     │
-    ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
+    ├── docs               <- Sphinx project
     │
     ├── models             <- Trained and serialized models, model predictions, or model summaries
     │
-    ├── notebooks          <- Jupyter notebooks. Naming convention is a number (for ordering),
-    │                         the creator's initials, and a short `-` delimited description, e.g.
-    │                         `1.0-jqp-initial-data-exploration`.
     │
-    ├── references         <- Data dictionaries, manuals, and all other explanatory materials.
+    ├── visualisation      <- figures visualisation
     │
-    ├── reports            <- Generated analysis as HTML, PDF, LaTeX, etc.
-    │   └── figures        <- Generated graphics and figures to be used in reporting
-    │
+    ├── reports            <- Generated analysis as HTML, PDF, Markdown, etc.
     ├── pyproject.toml     <- defines the build system as a dependency.
     ├── poetry.lock        <- prevents you from automatically getting the latest versions of your dependencies.
     ├── src                <- Source code for use in this project.

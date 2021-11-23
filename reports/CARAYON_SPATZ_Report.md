@@ -101,23 +101,36 @@ For **data preparation (preprocessing) and feature engineering**: feature select
         We store models as followed, given a version we store the model in mojo or pickle format.
         ![](https://i.imgur.com/0WCj2Bf.png)
 
-    - **predictions models**: we collected metadata and models in respectivelly pickle and MOJO format and then did preprocessing / feature engineering on the test set using the previously created functions for the preprocessing part. Predictions are accessible in the directory of the model which has done the prediction.
+    - **predictions models**: we collected metadata and models in respectivelly pickle and MOJO format and then did preprocessing / feature engineering on the test set using the previously created functions for the preprocessing part. Predictions are accessible in the directory of the model which has done the prediction. With xgboost H2O model, we get the following predictions:![](https://i.imgur.com/ofWMJ1j.png)       With xgboost classifier model, we get ![](https://i.imgur.com/R6gubH8.png)
+    
+    - For code partitioning, we used the library ***click*** to have a command line interface to work on the different modules.
+Example with the visualisation part:
+![](https://i.imgur.com/4iDeWFr.png)
 
-        For code partitioning, we used the library ***click*** to have a command line interface to work on the different modules.
         
-        Example with the visualisation part:
-        
-        ![](https://i.imgur.com/4iDeWFr.png)
+#### 7. Data storage
+The data directory is not pushed on our repository. But doing the make_dataset, build_features and predict will generate the different csv files.
+- make_dataset.py is calling Kaggle API and get the raw dataset as .zip. we stored it in the external directory and we write the csv in raw directory.
+- build_features.py do the preprocessing and feature engineering on the application_train.csv in the processed directory.
+-  predict_model.py calls the make_dataset.py to get the application_test raw data and used the metadata.pickle (metadata from the train set) to do the preprocessing and feature_engineering.
+
+![](https://i.imgur.com/eeex4pX.png)
 
 
-#### 7. Versionning 
+
+#### 8. Versionning 
 
 Thank to click, the user has the possibility to select a version to store its model and use specific version for prediction part too. 
+In the model directory, we can choose a version '0.0.2' to work with. In each version we can find directory of models. In each directory, one can find the model (.zip corresponding of mojo format) with its associated metrics and the predictions of the test_set. 
+![](https://i.imgur.com/SCmT8yy.png)
+We also stored the metadata from the trainset to use for test set preprocessing and feature_engineering.
 
 This first approach on versionning models and metadata was interresting but limited even if with H2O models we have the possibility to look at the metrics which have been stored in MOJO format, we may encounter some issues with this method of versionning on the long term.
 
 
-#### 8. H2O an interesting library for MLOps introduction 
+
+
+#### 9. H2O an interesting library for MLOps introduction 
 We had the opportunity to work with H2O library, we implemented GradientBoosting, Random Forest and Xgboost models using H2O.
 Thanks to the web server of H2O, we can visualize our model behavior and metrics. 
 
@@ -134,7 +147,7 @@ For example, we can look at the Xgboost model:
 ![](https://i.imgur.com/IbQUNcy.png)
 
 
-#### 9. Scores of the models
+#### 10. Scores of the models
 We extract those scores from the 0.0.2 version of our models. We store the metrics in json to easily access them:
 
 ![](https://i.imgur.com/a5OWGZ1.png)
