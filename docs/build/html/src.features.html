@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+
+    <meta itemprop="sphinx_documatt_theme" content="0.0.5"><title>features &mdash; Applications of Big Data Project 0.0.1 documentation</title>
+
+    
+        
+        <link rel="stylesheet" href="_static/css/main.css">
+        
+        <link rel="stylesheet" href="_static/pygments.css" type="text/css"/>
+        
+        
+            <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+        
+            <link rel="stylesheet" type="text/css" href="_static/css/main.css" />
+        
+    
+
+    <script type="text/javascript" src="_static/js/main.js"></script>
+
+        <script type="text/javascript" id="documentation_options"
+                data-url_root="./"
+                src="_static/documentation_options.js"></script>
+
+        
+            <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+            <script src="_static/jquery.js"></script>
+            <script src="_static/underscore.js"></script>
+            <script src="_static/doctools.js"></script>
+    
+
+    
+        
+        <link rel="shortcut icon" href="_static/img/favicon.ico"/>
+    
+            <link rel="index" title="Index" href="genindex.html"/>
+            <link rel="search" title="Search" href="search.html"/>
+            <link rel="next" title="models" href="src.models.html"/>
+            <link rel="prev" title="data" href="src.data.html"/>
+
+    
+
+    
+</head>
+<body>
+
+
+    <header>
+        
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="index.html">
+                            <img
+                                
+                                    src="_static/img/logo.svg"
+                                
+                                alt="Logo"
+                                
+                                    style="width: 10rem;"
+                                
+                                />
+                            
+                        </a>
+                        <!--<a role="button" class="navbar-burger burger" aria-label="menu"
+                           aria-expanded="false"
+                           data-target="navbarMenu">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>-->
+                    </div>
+
+                    
+                        <div id="navbarMenu" class="navbar-menu">
+                            <div class="navbar-end">
+                                <!--
+                                <a class="navbar-item" href="https://documatt.com">Documatt</a>
+                                <a class="navbar-item"
+                                   href="https://snippets.documatt.com">Snippets</a>
+                                <a class="navbar-item is-active" href="https://blog.documatt.com">Blog</a>
+                                -->
+                            </div>
+                        </div>
+                    
+                </div>
+            </nav>
+        
+
+        
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <div class="container">
+                    <ul>
+                        <li><a href="index.html">Applications of Big Data Project</a></li>
+                        
+    <li><a href="modules.html" aria-current="page">&lt;no title&gt;</a>
+    </li>
+
+    <li><a href="src.html" aria-current="page">Code documentation</a>
+    </li>
+
+
+    <li class="is-active">features</li>
+
+                    </ul>
+                </div>
+            </nav>
+        
+    </header>
+
+
+
+    <section class="section site-hero" style="padding-bottom: 0;">
+        <div class="container">
+            <div class="columns">
+                <div class="column content is-8 is-offset-2">
+                        
+                            <h1 class="title is-2">
+                                <a href="index.html">Applications of Big Data Project</a>
+                            </h1>
+                            <div class="motto subtitle is-4">
+                                
+                            </div>
+                        
+                    
+                </div>
+                <div class="column">
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<hr>
+
+
+    
+        <section class="section is-paddingless" id="document">
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-2 mt-2 is-family-sans-serif">
+                        
+<div class="content globaltoc">
+    <p class="has-text-weight-bold">Table of Contents</p>
+    <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="src.html">Code documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="src.data.html">data</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.models.html">models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.visualization.html">visualization</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+                        
+                    </div>
+                    <div class="column is-8">
+                        
+                        <article class="content is-medium sphinx-body">
+                            
+  <div class="section" id="features">
+<h1>features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-src.features.build_features">
+<span id="build-features-py"></span><h2>build_features.py<a class="headerlink" href="#module-src.features.build_features" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.build_features">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">build_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#build_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.build_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to:
+- build the preprocessed dataframe
+- generate the MinMax scaler
+- generate a list of the features
+- generate a dictionary of mode for numerical values</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path of the dataset to preprocessed</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – label</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the preprocessed dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the MinMax scaler</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>MinMaxScaler</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of the features</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of numerical columns and associated mode</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.do_min_max_scaler">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">do_min_max_scaler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_columns</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#do_min_max_scaler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.do_min_max_scaler" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="simple">
+<dt>This function allows you to:</dt><dd><ul class="simple">
+<li><p>transform features by scaling each feature to a given range</p></li>
+<li><p>store the scaler</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> – dataframe to scale</p>
+</dd>
+</dl>
+<p>:type df:pd.DataFrame
+:param numerical_columns: list of numerical columns in the dataframe
+:type numerical_columns: list
+:return: modified dataframe
+:rtype: pd.DataFrame
+:return: scaler
+:rtype: MinMaxScaler</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.fix_anomalie_employment">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">fix_anomalie_employment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#fix_anomalie_employment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.fix_anomalie_employment" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to fix an anomalie by the mode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>value</strong> (<em>str</em>) – days of employment</p></li>
+<li><p><strong>mode</strong> (<em>int</em>) – mode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.generate_features">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">generate_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#generate_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.generate_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to:
+- generate the preprocessed dataset
+- store metadata
+- store the new dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>path</strong> (<em>str</em>) – path where you want to store the new dataset</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – label</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.get_columns_with_type">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">get_columns_with_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#get_columns_with_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.get_columns_with_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to get all the columns with a certain type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> – dataframe you want to get all the columns with a certain type</p>
+</dd>
+</dl>
+<p>:type df:pd.DataFrame
+:param type: the type you need
+:type type: str
+:return: dataframe with columns of this type
+:rtype: pd.DataFrame</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.get_dummies_categorical">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">get_dummies_categorical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">categorical_cols</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#get_dummies_categorical"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.get_dummies_categorical" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to do one hot encoding on categorical columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> – dataframe you want to preprocessed</p>
+</dd>
+</dl>
+<p>:type df:pd.DataFrame
+:param categorical_cols: dataframe with categorical columns
+:type categorical_cols: pd.DataFrame
+:return: dataframe preprocessed
+:rtype: pd.DataFrame</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.get_numerical_columns">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">get_numerical_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#get_numerical_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.get_numerical_columns" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to get the number of numerical columns in the dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>df</strong> (<em>pd.DataFrame</em>) – the dataframe we want to get the number of numerical columns</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of numerical columns</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.preprocess_numerical_features">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">preprocess_numerical_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numerical_columns</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#preprocess_numerical_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.preprocess_numerical_features" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to fill NULL/NA values with the mode</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – the dataframe to preprocessed</p></li>
+<li><p><strong>numerical_columns</strong> (<em>list</em>) – list of numerical columns in the dataframe</p></li>
+<li><p><strong>label</strong> (<em>str</em>) – label</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the modified dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of numerical columns and associated mode</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.remove_percent_missing_values">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">remove_percent_missing_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">percent</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#remove_percent_missing_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.remove_percent_missing_values" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to do feature selection/reduction by
+deleting features with more than x% of NULL/NA values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – dataframe to modify</p></li>
+<li><p><strong>percent</strong> (<em>int</em>) – a limit percentage to fix in order to remove
+features with more than this percentage of NULL/NA values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the modified dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="src.features.build_features.transform_dob_catage">
+<span class="sig-prename descclassname"><span class="pre">src.features.build_features.</span></span><span class="sig-name descname"><span class="pre">transform_dob_catage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">days_birth</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/features/build_features.html#transform_dob_catage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.features.build_features.transform_dob_catage" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function allows you to transform days of birth from days to year to age class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – dataframe to modify</p></li>
+<li><p><strong>days_birth</strong> (<em>str</em>) – column with the days of birth</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new classe_age column</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+
+                            
+                            
+                                <p class="has-text-weight-light is-size-6 my-4">
+                                    Previous:
+                                    <a href="src.data.html"
+                                       title="previous chapter">data</a>
+                                
+                                    |
+                                
+                                    Next:
+                                    <a href="src.models.html"
+                                       title="next chapter">models</a>
+                                </p>
+                            
+                        </article>
+                    </div>
+                    <div class="column is-2 mt-2  is-family-sans-serif">
+                        
+  <div class="content localtoc">
+    <p class="has-text-weight-bold">On this page</p>
+    <ul>
+<li><a class="reference internal" href="#">features</a><ul>
+<li><a class="reference internal" href="#module-src.features.build_features">build_features.py</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered has-text-primary">
+                <a href="index.html">
+                    <img
+                        
+                            src="_static/img/logo.svg"
+                        
+                        alt="Logo"
+                        
+                            style="width: 10rem;"
+                        
+                    />
+                 </a>
+                 <div class="footer-text">
+                
+                    <p></p>
+                
+                </div>
+
+                <p class="mt-4">Copyright &copy; 2021, CARAYON Chloé, SPATZ Cécile</p>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+</html>

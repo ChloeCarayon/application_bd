@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+
+    <meta itemprop="sphinx_documatt_theme" content="0.0.5"><title>src.features.build_features &mdash; Applications of Big Data Project 0.0.1 documentation</title>
+
+    
+        
+        <link rel="stylesheet" href="../../../_static/css/main.css">
+        
+        <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css"/>
+        
+        
+            <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+        
+            <link rel="stylesheet" type="text/css" href="../../../_static/css/main.css" />
+        
+    
+
+    <script type="text/javascript" src="../../../_static/js/main.js"></script>
+
+        <script type="text/javascript" id="documentation_options"
+                data-url_root="../../../"
+                src="../../../_static/documentation_options.js"></script>
+
+        
+            <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+            <script src="../../../_static/jquery.js"></script>
+            <script src="../../../_static/underscore.js"></script>
+            <script src="../../../_static/doctools.js"></script>
+    
+
+    
+        
+        <link rel="shortcut icon" href="../../../_static/img/favicon.ico"/>
+    
+            <link rel="index" title="Index" href="../../../genindex.html"/>
+            <link rel="search" title="Search" href="../../../search.html"/>
+
+    
+
+    
+</head>
+<body>
+
+
+    <header>
+        
+            <nav class="navbar" role="navigation" aria-label="main navigation">
+                <div class="container">
+                    <div class="navbar-brand">
+                        <a class="navbar-item" href="../../../index.html">
+                            <img
+                                
+                                    src="../../../_static/img/logo.svg"
+                                
+                                alt="Logo"
+                                
+                                    style="width: 10rem;"
+                                
+                                />
+                            
+                        </a>
+                        <!--<a role="button" class="navbar-burger burger" aria-label="menu"
+                           aria-expanded="false"
+                           data-target="navbarMenu">
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                            <span aria-hidden="true"></span>
+                        </a>-->
+                    </div>
+
+                    
+                        <div id="navbarMenu" class="navbar-menu">
+                            <div class="navbar-end">
+                                <!--
+                                <a class="navbar-item" href="https://documatt.com">Documatt</a>
+                                <a class="navbar-item"
+                                   href="https://snippets.documatt.com">Snippets</a>
+                                <a class="navbar-item is-active" href="https://blog.documatt.com">Blog</a>
+                                -->
+                            </div>
+                        </div>
+                    
+                </div>
+            </nav>
+        
+
+        
+            <nav class="breadcrumb" aria-label="breadcrumbs">
+                <div class="container">
+                    <ul>
+                        <li><a href="../../../index.html">Applications of Big Data Project</a></li>
+                        
+    <li><a href="../../index.html" aria-current="page">Module code</a>
+    </li>
+
+
+    <li class="is-active">src.features.build_features</li>
+
+                    </ul>
+                </div>
+            </nav>
+        
+    </header>
+
+
+
+    <section class="section site-hero" style="padding-bottom: 0;">
+        <div class="container">
+            <div class="columns">
+                <div class="column content is-8 is-offset-2">
+                        
+                            <h1 class="title is-2">
+                                <a href="../../../index.html">Applications of Big Data Project</a>
+                            </h1>
+                            <div class="motto subtitle is-4">
+                                
+                            </div>
+                        
+                    
+                </div>
+                <div class="column">
+                    
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+<hr>
+
+
+    
+        <section class="section is-paddingless" id="document">
+            <div class="container">
+                <div class="columns">
+                    <div class="column is-2 mt-2 is-family-sans-serif">
+                        
+<div class="content globaltoc">
+    <p class="has-text-weight-bold">Table of Contents</p>
+    <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src.html">Code documentation</a></li>
+</ul>
+
+</div>
+                        
+                    </div>
+                    <div class="column is-8">
+                        
+                        <article class="content is-medium sphinx-body">
+                            
+  <h1>Source code for src.features.build_features</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+
+<span class="kn">from</span> <span class="nn">utils</span> <span class="kn">import</span> <span class="n">dump_pickle</span>
+
+
+<div class="viewcode-block" id="generate_features"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.generate_features">[docs]</a><span class="k">def</span> <span class="nf">generate_features</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to:</span>
+<span class="sd">    - generate the preprocessed dataset</span>
+<span class="sd">    - store metadata</span>
+<span class="sd">    - store the new dataframe</span>
+
+<span class="sd">    :param path: path where you want to store the new dataset</span>
+<span class="sd">    :type path: str</span>
+<span class="sd">    :param label: label</span>
+<span class="sd">    :type label: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">build_features</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">data/raw/application_train.csv&quot;</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;scaler&#39;</span><span class="p">:</span> <span class="n">scaler</span><span class="p">,</span>
+                <span class="s1">&#39;features_columns&#39;</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span>
+                <span class="s1">&#39;mode&#39;</span><span class="p">:</span> <span class="n">mode</span><span class="p">}</span>
+    <span class="n">dump_pickle</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">models/metadata&quot;</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">data/processed/application_train.csv&quot;</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Done&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="build_features"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.build_features">[docs]</a><span class="k">def</span> <span class="nf">build_features</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to:</span>
+<span class="sd">    - build the preprocessed dataframe</span>
+<span class="sd">    - generate the MinMax scaler</span>
+<span class="sd">    - generate a list of the features</span>
+<span class="sd">    - generate a dictionary of mode for numerical values</span>
+
+<span class="sd">    :param path: path of the dataset to preprocessed</span>
+<span class="sd">    :type path: str</span>
+<span class="sd">    :param label: label</span>
+<span class="sd">    :type label: str</span>
+<span class="sd">    :return: the preprocessed dataframe</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    :return: the MinMax scaler</span>
+<span class="sd">    :rtype: MinMaxScaler</span>
+<span class="sd">    :return: a list of the features</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    :return: dictionary of numerical columns and associated mode</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;SK_ID_CURR&#39;</span><span class="p">])</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">remove_percent_missing_values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="mi">35</span><span class="p">)</span>
+    <span class="n">number_numerical_columns</span> <span class="o">=</span> <span class="n">get_numerical_columns</span><span class="p">(</span><span class="n">df</span><span class="p">,</span>  <span class="n">label</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">mode</span> <span class="o">=</span> <span class="n">preprocess_numerical_features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">number_numerical_columns</span><span class="p">,</span> <span class="n">label</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">()</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;cat_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">transform_dob_catage</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;DAYS_BIRTH&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DAYS_BIRTH&#39;</span><span class="p">])</span>
+    <span class="n">number_numerical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;DAYS_BIRTH&#39;</span><span class="p">)</span>
+    <span class="n">mode_days_employed</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;DAYS_EMPLOYED&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">365243</span><span class="p">][</span><span class="s1">&#39;DAYS_EMPLOYED&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;DAYS_EMPLOYED&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">DAYS_EMPLOYED</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">fix_anomalie_employment</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mode_days_employed</span><span class="p">))</span>
+    <span class="n">df</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">do_min_max_scaler</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">number_numerical_columns</span><span class="p">)</span>
+    <span class="n">categorical_cols_train</span> <span class="o">=</span> <span class="n">get_columns_with_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">get_dummies_categorical</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">categorical_cols_train</span><span class="p">)</span>
+    <span class="n">features</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="c1">#features.remove(label)</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">features</span><span class="p">,</span> <span class="n">mode</span></div>
+
+
+<div class="viewcode-block" id="remove_percent_missing_values"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.remove_percent_missing_values">[docs]</a><span class="k">def</span> <span class="nf">remove_percent_missing_values</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">percent</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to do feature selection/reduction by</span>
+<span class="sd">    deleting features with more than x% of NULL/NA values.</span>
+
+<span class="sd">    :param df: dataframe to modify</span>
+<span class="sd">    :type df: pd.DataFrame</span>
+<span class="sd">    :param percent: a limit percentage to fix in order to remove</span>
+<span class="sd">                    features with more than this percentage of NULL/NA values</span>
+<span class="sd">    :type percent: int</span>
+<span class="sd">    :return: the modified dataframe</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">missing_values</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;percentage&#39;</span><span class="p">])</span>
+    <span class="n">to_keep</span> <span class="o">=</span> <span class="n">missing_values</span><span class="p">[</span><span class="n">missing_values</span><span class="p">[</span><span class="s1">&#39;percentage&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">percent</span><span class="p">]</span>
+    <span class="n">columns_to_keep</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">to_keep</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">columns_to_keep</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="get_numerical_columns"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.get_numerical_columns">[docs]</a><span class="k">def</span> <span class="nf">get_numerical_columns</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to get the number of numerical columns in the dataframe</span>
+
+<span class="sd">    :param df: the dataframe we want to get the number of numerical columns</span>
+<span class="sd">    :type df: pd.DataFrame</span>
+<span class="sd">    :return: list of numerical columns</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">float_columns</span> <span class="o">=</span> <span class="n">get_columns_with_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;float64&quot;</span><span class="p">)</span>
+    <span class="n">int_columns</span> <span class="o">=</span> <span class="n">get_columns_with_type</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;int64&quot;</span><span class="p">)</span>
+    <span class="n">numerical_columns</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">float_columns</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">int_columns</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">numerical_columns</span><span class="p">:</span>
+        <span class="n">numerical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numerical_columns</span></div>
+
+
+<div class="viewcode-block" id="preprocess_numerical_features"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.preprocess_numerical_features">[docs]</a><span class="k">def</span> <span class="nf">preprocess_numerical_features</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">numerical_columns</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to fill NULL/NA values with the mode</span>
+
+<span class="sd">    :param df: the dataframe to preprocessed</span>
+<span class="sd">    :type df: pd.DataFrame</span>
+<span class="sd">    :param numerical_columns: list of numerical columns in the dataframe</span>
+<span class="sd">    :type numerical_columns: list</span>
+<span class="sd">    :param label: label</span>
+<span class="sd">    :type label: str</span>
+<span class="sd">    :return: the modified dataframe</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    :return: dictionary of numerical columns and associated mode</span>
+<span class="sd">    :rtype:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">numerical_columns</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+    <span class="n">mode</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">numerical_columns</span><span class="p">:</span>
+        <span class="n">mode</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">feature</span><span class="p">]</span><span class="o">.</span><span class="n">mode</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">mode</span></div>
+
+
+<div class="viewcode-block" id="transform_dob_catage"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.transform_dob_catage">[docs]</a><span class="k">def</span> <span class="nf">transform_dob_catage</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">days_birth</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to transform days of birth from days to year to age class</span>
+
+<span class="sd">    :param df: dataframe to modify</span>
+<span class="sd">    :type df: pd.DataFrame</span>
+<span class="sd">    :param days_birth: column with the days of birth</span>
+<span class="sd">    :type days_birth: str</span>
+<span class="sd">    :return: new classe_age column</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">days_birth</span><span class="p">]</span><span class="o">/</span><span class="mi">365</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;classe_age&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">temp</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+                             <span class="n">labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Jeune&quot;</span><span class="p">,</span> <span class="s2">&quot;Jeune_adulte&quot;</span><span class="p">,</span> <span class="s2">&quot;Adulte&quot;</span><span class="p">,</span> <span class="s2">&quot;Aine&quot;</span><span class="p">,</span> <span class="s2">&quot;Senior&quot;</span><span class="p">],</span> <span class="n">include_lowest</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;classe_age&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="fix_anomalie_employment"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.fix_anomalie_employment">[docs]</a><span class="k">def</span> <span class="nf">fix_anomalie_employment</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to fix an anomalie by the mode</span>
+
+<span class="sd">    :param value: days of employment</span>
+<span class="sd">    :type value: str</span>
+<span class="sd">    :param mode: mode</span>
+<span class="sd">    :type mode: int</span>
+<span class="sd">    :return: new value</span>
+<span class="sd">    :rtype: int</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">365243</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="do_min_max_scaler"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.do_min_max_scaler">[docs]</a><span class="k">def</span> <span class="nf">do_min_max_scaler</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">numerical_columns</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to:</span>
+<span class="sd">     - transform features by scaling each feature to a given range</span>
+<span class="sd">     - store the scaler</span>
+
+<span class="sd">    :param df: dataframe to scale</span>
+<span class="sd">    :type df:pd.DataFrame</span>
+<span class="sd">    :param numerical_columns: list of numerical columns in the dataframe</span>
+<span class="sd">    :type numerical_columns: list</span>
+<span class="sd">    :return: modified dataframe</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    :return: scaler</span>
+<span class="sd">    :rtype: MinMaxScaler</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scaler</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">])</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">numerical_columns</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">scaler</span></div>
+
+
+<div class="viewcode-block" id="get_columns_with_type"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.get_columns_with_type">[docs]</a><span class="k">def</span> <span class="nf">get_columns_with_type</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to get all the columns with a certain type</span>
+
+<span class="sd">    :param df: dataframe you want to get all the columns with a certain type</span>
+<span class="sd">    :type df:pd.DataFrame</span>
+<span class="sd">    :param type: the type you need</span>
+<span class="sd">    :type type: str</span>
+<span class="sd">    :return: dataframe with columns of this type</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">include</span><span class="o">=</span><span class="nb">type</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span></div>
+
+
+<div class="viewcode-block" id="get_dummies_categorical"><a class="viewcode-back" href="../../../src.features.html#src.features.build_features.get_dummies_categorical">[docs]</a><span class="k">def</span> <span class="nf">get_dummies_categorical</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">categorical_cols</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This function allows you to do one hot encoding on categorical columns</span>
+
+<span class="sd">    :param df: dataframe you want to preprocessed</span>
+<span class="sd">    :type df:pd.DataFrame</span>
+<span class="sd">    :param categorical_cols: dataframe with categorical columns</span>
+<span class="sd">    :type categorical_cols: pd.DataFrame</span>
+<span class="sd">    :return: dataframe preprocessed</span>
+<span class="sd">    :rtype: pd.DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">categorical_cols</span><span class="p">)</span></div>
+</pre></div>
+
+
+                            
+                            
+                        </article>
+                    </div>
+                    <div class="column is-2 mt-2  is-family-sans-serif">
+                        
+                        
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered has-text-primary">
+                <a href="../../../index.html">
+                    <img
+                        
+                            src="../../../_static/img/logo.svg"
+                        
+                        alt="Logo"
+                        
+                            style="width: 10rem;"
+                        
+                    />
+                 </a>
+                 <div class="footer-text">
+                
+                    <p></p>
+                
+                </div>
+
+                <p class="mt-4">Copyright &copy; 2021, CARAYON Chloé, SPATZ Cécile</p>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+</html>
