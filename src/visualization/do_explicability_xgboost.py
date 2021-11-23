@@ -18,7 +18,7 @@ def shap_visualisation_xgboost(version:str, point:int, do_train=False):
     """
 
     test = pd.read_csv(f"{directory_path}data/processed/application_test.csv")
-    model = load_pickle(f"{directory_path}/models/{version}/xgboostclassifier")
+    model = load_pickle(f"{directory_path}/models/{version}/xgboostclassifier/xgboostclassifier")
 
     # understanding model predictions
     X = test
